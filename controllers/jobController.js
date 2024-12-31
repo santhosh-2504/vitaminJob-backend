@@ -34,7 +34,8 @@ export const getAllJobs = catchAsyncErrors(async (req, res, next) => {
   // Get paginated results
   const jobs = await Job.find(query)
     .skip(skip)
-    .limit(parseInt(limit));
+    .limit(parseInt(limit))
+    .sort({_id : -1});
 
   res.status(200).json({
     success: true,
