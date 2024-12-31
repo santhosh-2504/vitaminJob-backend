@@ -6,8 +6,13 @@ import jwt from "jsonwebtoken"
 export const isAuthenticated = catchAsyncErrors(async(req, res, next) => {
     const {token} = req.cookies;
     
+    // Don't check authentication for login and register routes
+    if (req.path === '/login' || req.path === '/register') {
+        return next();
+    }
+    
     if(!token){
-        return next(new ErrorHandler("User is not authenticated", 400));
+        return next(new ErrorHandler("User not authenticated", 400));
     }
     
     try {
