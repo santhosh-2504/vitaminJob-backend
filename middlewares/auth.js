@@ -6,12 +6,18 @@ import jwt from "jsonwebtoken"
 export const isAuthenticated = catchAsyncErrors(async(req, res, next) => {
     const {token} = req.cookies;
     
-    // For /getuser route, return success: false without error if no token
-    if (req.path === '/getuser' && !token) {
-        return res.status(200).json({
-            success: false,
-            isAuthenticated: false
-        });
+    // Don't check authentication for login and register routes
+    const publicRoutes = [
+        '/login',
+        '/register',
+        '/roadmap/all',
+        '/course/all',
+        '/quiz/all'
+    ];
+    
+    // Skip authentication for public routes
+    if (publicRoutes.includes(req.path)) {
+        return next();
     }
     
     if(!token){
@@ -23,13 +29,6 @@ export const isAuthenticated = catchAsyncErrors(async(req, res, next) => {
         req.user = await User.findById(decoded.id);
         next();
     } catch (error) {
-        // For /getuser route, handle expired tokens gracefully
-        if (req.path === '/getuser') {
-            return res.status(200).json({
-                success: false,
-                isAuthenticated: false
-            });
-        }
         return next(new ErrorHandler("Invalid or expired token", 401));
     }
 });
