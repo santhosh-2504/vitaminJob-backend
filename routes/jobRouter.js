@@ -12,4 +12,5 @@ router.get("/get/:id", getASingleJob);
 router.get("/bookmarked-jobs", isAuthenticated, getAllBookmarkedJobs);
 
 
+
 export default router;

@@ -22,9 +22,9 @@ export const getAllCourses = catchAsyncErrors(async(req, res, next)=>{
         }
         const totalCourses = await Course.countDocuments(query);
         const courses = await Course.find(query)
-        .sort({createdAt: -1})
         .skip(skip)
         .limit(limit)
+        .sort({_id : -1})
         //.select('title description niche createdAt');
 
         const totalPages = Math.ceil(totalCourses/limit);
