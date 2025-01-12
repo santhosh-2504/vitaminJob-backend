@@ -44,7 +44,11 @@ const jobSchema = mongoose.Schema({
   applyLink : {
       type : String,
       required : true
-  }
+  },
+  companyDescription : {
+      type : String,
+      required : true
+  },
 })
 
 export const Job = mongoose.model("Job", jobSchema);
